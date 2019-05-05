@@ -1,0 +1,21 @@
+{
+  "name": "me",
+  "version": "1.0.0",
+  "description": "The 'Me' API",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.5",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Daniel K. Driskill",
+  "license": "ISC"
+}
