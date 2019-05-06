@@ -1,18 +1,6 @@
 const express = require('express')
-const router = new express.Router()
 const { User } = require('../models/user')
-
-// Create new user
-router.post('/users', async (req, res) => {
-  const user = new User(req.body)
-  try {
-    await user.save()
-    res.status(201).send(user)
-  }
-  catch (err) {
-    res.status(400).send(err)
-  }
-})
+const router = new express.Router()
 
 // Get all users
 router.get('/users', async (req, res) => {
@@ -49,11 +37,15 @@ router.patch('/users/:id', async (req, res) => {
   const isValid = updates.every(u => availableUpdates.includes(u))
   if (!isValid) return res.status(400).send({ error: 'Invalid update fields.' })
   try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+    /* Cannot use findByIdAndUpdate() because it is a newer Mongoose operation
+     * that bypasses our mongoose model middleware, which would not allow us,
+     * for example, to hash our passwords during a password update on a user
+     * object...
+     */
+    const user = await User.findById(req.params.id)
+    // Iterate through dynamic updates
+    updates.forEach(u => user[u] = req.body[u])
+    await user.save()
     if (!user) return res.status(404).send()
     res.status(202).send(user)
   }
@@ -62,6 +54,7 @@ router.patch('/users/:id', async (req, res) => {
   }
 })
 
+// Delete user
 router.delete('/users/:id', async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id)

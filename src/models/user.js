@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
-exports.User = mongoose.model('User', {
+const userSchema = mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -17,6 +19,7 @@ exports.User = mongoose.model('User', {
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     trim: true,
     validate(val) {
@@ -53,4 +56,39 @@ exports.User = mongoose.model('User', {
       }
     },
   },
+  tokens: [{
+    token: {
+      type: String,
+      required: true,
+    },
+  }],
 })
+
+userSchema.methods.generateAuthToken = async function () {
+  const user = this
+  const token = jwt.sign({ _id: user.id.toString() }, 'meapiforredx')
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
+  return token
+}
+
+userSchema.statics.findByCredentials = async (email, password) => {
+  const err = 'Unable to log in.'
+  const user = await User.findOne({ email })
+  if (!user) throw new Error(err)
+  const match = await bcrypt.compare(password, user.password)
+  if (!match) throw new Error(err)
+  return user
+}
+
+userSchema.pre('save', async function (next) {
+  const user = this
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 8)
+  }
+  next()
+})
+
+const User = mongoose.model('User', userSchema)
+
+exports.User = User
