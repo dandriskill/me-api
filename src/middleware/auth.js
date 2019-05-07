@@ -7,8 +7,9 @@ const auth = async (req, res, next) => {
     const decoded = jwt.verify(token, 'meapiforredx')
     const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
     if (!user) throw new Error()
-    // Make user available to request object in route handler
+    // Make user and token available to request object in route handler
     req.user = user
+    req.token = token
     next()
   } catch (err) {
     res.status(401).send({ error: 'Invalid credentials.' })

@@ -1,6 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
 const router = new express.Router()
+const auth = require('../middleware/auth')
 
 // Create new user
 router.post('/signup', async (req, res) => {
@@ -24,6 +25,30 @@ router.post('/login', async (req, res) => {
   }
   catch (err) {
     res.status(400).send(err)
+  }
+})
+
+// Logout
+router.post('/logout', auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => token.token !== req.token)
+    await req.user.save()
+    res.status(200).send()
+  }
+  catch (err) {
+    res.status(500).send()
+  }
+})
+
+// Logout all
+router.post('/logout-all', auth, async (req, res) => {
+  try {
+    req.user.tokens = []
+    await req.user.save()
+    res.status(200).send()
+  }
+  catch (err) {
+    res.status(500).send()
   }
 })
 
