@@ -64,6 +64,7 @@ const userSchema = mongoose.Schema({
   }],
 })
 
+// Generates auth token and concatenates to user's tokens array...
 userSchema.methods.generateAuthToken = async function () {
   const user = this
   const token = jwt.sign(
@@ -76,6 +77,16 @@ userSchema.methods.generateAuthToken = async function () {
   return token
 }
 
+// Removes password and tokens before response JSON object is sent client side...
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+  delete userObject.password
+  delete userObject.tokens
+  return userObject
+}
+
+// Finds user with email/password credentials...
 userSchema.statics.findByCredentials = async (email, password) => {
   const err = 'Unable to log in.'
   const user = await User.findOne({ email })
@@ -85,6 +96,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user
 }
 
+// Mongoose hook that ensures the password property is hashed before any save()...
 userSchema.pre('save', async function (next) {
   const user = this
   if (user.isModified('password')) {

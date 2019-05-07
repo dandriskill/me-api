@@ -40,7 +40,7 @@ router.post('/logout', auth, async (req, res) => {
   }
 })
 
-// Logout all
+// Logout all (removes all tokens from user's tokens array)
 router.post('/logout-all', auth, async (req, res) => {
   try {
     req.user.tokens = []
