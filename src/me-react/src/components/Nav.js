@@ -15,7 +15,13 @@ const Nav = ({ history, authed, handleLogout }) => {
           <div className="navbar-links">
             <button
               className="navbar-button"
-              onClick={() => redirect('/edit-profile')}
+              onClick={() => redirect('/profile')}
+            >
+              Profile
+            </button>
+            <button
+              className="navbar-button"
+              onClick={() => redirect('/edit')}
             >
               Edit Profile
             </button>

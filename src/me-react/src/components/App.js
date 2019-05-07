@@ -24,28 +24,21 @@ class App extends Component {
         data: {
           user,
           token,
-        }
+        },
       } = await axios({
         method: 'post',
         url: 'http://localhost:3001/login',
         data: {
           email,
           password,
-        }
+        },
       });
-      if (user && token) {
-        this.setState({
-          user,
-          token,
-          authed: true,
-          loading: false,
-        });
-      }
+      if (user && token) this.populateUser(user, token);
     }
     catch (err) {
       console.log(err);
     }
-  }
+  };
 
   handleSignup = async ({
     firstName,
@@ -58,7 +51,7 @@ class App extends Component {
         data: {
           user,
           token,
-        }
+        },
       } = await axios({
         method: 'post',
         url: 'http://localhost:3001/signup',
@@ -67,21 +60,14 @@ class App extends Component {
           email,
           password,
           age,
-        }
+        },
       });
-      if (user && token) {
-        this.setState({
-          user,
-          token,
-          authed: true,
-          loading: false,
-        });
-      }
+      if (user && token) this.populateUser(user, token);
     }
     catch (err) {
       console.log(err);
     }
-  }
+  };
 
   handleLogout = async () => {
     try {
@@ -104,12 +90,62 @@ class App extends Component {
     catch (err) {
       console.log(err);
     }
-  }
+  };
 
   handleEditProfile = async updates => {
     // Send updates to API
-    
-  }
+    try {
+      const {
+        data: user,
+      } = await axios({
+        method: 'patch',
+        url: 'http://localhost:3001/users/me',
+        data: updates,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+        },
+      });
+      if (user) this.setState({ user })
+    }
+    catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleDeleteProfile = async () => {
+    // Delete user profile
+    try {
+      const {
+        status,
+      } = await axios({
+        method: 'delete',
+        url: 'http://localhost:3001/users/me',
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+        },
+      });
+      if (status === 200) {
+        this.setState({
+          authed: false,
+          loading: false,
+          user: null,
+          token: null,
+        });
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  };
+
+  populateUser = (user, token) => {
+    this.setState({
+      user,
+      token,
+      authed: true,
+      loading: false,
+    });
+  };
 
   render() {
     const {
@@ -122,6 +158,7 @@ class App extends Component {
       handleSignup,
       handleLogout,
       handleEditProfile,
+      handleDeleteProfile,
     } = this;
 
     return (
@@ -157,16 +194,18 @@ class App extends Component {
               deezProps={{
                 loading,
                 user,
+                authed,
               }}
             />
             <PrivateRoute
-              path="/edit-profile"
+              path="/edit"
               component={EditProfile}
               authed={authed}
               deezProps={{
                 loading,
                 user,
                 handleEditProfile,
+                handleDeleteProfile,
               }}
             />
           </Switch>
