@@ -4,8 +4,8 @@ const router = new express.Router()
 const auth = require('../middleware/auth')
 
 // Get user
-router.get('/users/me', auth, async (req, res) => {
-  res.send(req.user)
+router.get('/users/me', auth, async ({ user }, res) => {
+  res.send(user)
 })
 
 // Update user
@@ -15,6 +15,7 @@ router.patch('/users/me', auth, async (req, res) => {
     'email',
     'password',
     'age',
+    'gender',
   ]
   const updates = Object.keys(req.body)
   const isValid = updates.every(u => availableUpdates.includes(u))

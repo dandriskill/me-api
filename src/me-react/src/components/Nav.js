@@ -14,19 +14,19 @@ const Nav = ({ history, authed, handleLogout }) => {
         (
           <div className="navbar-links">
             <button
-              className="navbar-button"
+              className="ghost"
               onClick={() => redirect('/profile')}
             >
               Profile
             </button>
             <button
-              className="navbar-button"
+              className="ghost"
               onClick={() => redirect('/edit')}
             >
               Edit Profile
             </button>
             <button
-              className="navbar-button"
+              className="ghost"
               onClick={() => handleLogout()}
             >
               Logout
@@ -35,13 +35,13 @@ const Nav = ({ history, authed, handleLogout }) => {
         ) : (
           <div className="navbar-links">
             <button
-              className="navbar-button"
+              className="ghost"
               onClick={() => redirect('/')}
             >
               Login
             </button>
             <button
-              className="navbar-button"
+              className="ghost"
               onClick={() => redirect('/signup')}
             >
               Signup

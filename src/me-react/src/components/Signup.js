@@ -7,6 +7,7 @@ const initialValues = {
   name: '',
   email: '',
   age: '',
+  gender: '',
   password: '',
   passwordConfirmation: '',
 };
@@ -23,6 +24,10 @@ const signUpSchema = Yup.object().shape({
     .required('Required'),
   age: Yup
     .number()
+    .required('Required'),
+  gender: Yup
+    .string()
+    .typeError('Only normal characters allowed')
     .required('Required'),
   password: Yup
     .string()
@@ -45,9 +50,10 @@ const Signup = ({ handleSignup, history }) => (
     <Formik
       initialValues={initialValues}
       validationSchema={signUpSchema}
-      onSubmit={({ email, age, password, name }, { resetForm, setSubmitting }) => {
+      onSubmit={({ email, age, gender: g, password, name }, { resetForm, setSubmitting }) => {
         const firstName = formatInput(name);
-        handleSignup({ email, age, password, firstName });
+        const gender = formatInput(g);
+        handleSignup({ email, age, gender, password, firstName });
         setSubmitting(false);
       }}
     >
@@ -84,6 +90,16 @@ const Signup = ({ handleSignup, history }) => (
                 placeholder="Age"
               />
               <ErrorMessage name="age" component="div" className="error-message" />
+            </div>
+            <div className="field">
+              <Field
+                type="text"
+                name="gender"
+                component="input"
+                className="form-input"
+                placeholder="Gender"
+              />
+              <ErrorMessage name="gender" component="div" className="error-message" />
             </div>
             <div className="field">
               <Field

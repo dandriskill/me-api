@@ -1,0 +1,29 @@
+input {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  width: 100%;
+  font-size: 18px;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.form-inner-container {
+  width: 200px;
+}
+
+.field {
+  margin: 20px 0;
+  width: 100%;
+}
+
+@media (min-width: 780px) {
+  .form-inner-container {
+    width: 300px;
+  }
+}

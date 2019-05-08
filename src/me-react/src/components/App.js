@@ -45,6 +45,7 @@ class App extends Component {
     email,
     password,
     age,
+    gender,
   }) => {
     try {
       const {
@@ -60,6 +61,7 @@ class App extends Component {
           email,
           password,
           age,
+          gender,
         },
       });
       if (user && token) this.populateUser(user, token);

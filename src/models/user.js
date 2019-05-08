@@ -56,6 +56,19 @@ const userSchema = mongoose.Schema({
       }
     },
   },
+  gender: {
+    type: String,
+    required: true,
+    trim: true,
+    validate(val) {
+      if (!validator.isAlpha(val, 'en-US')) {
+        throw new Error('Gender can only contain letters.')
+      }
+      if (val.length > 50) {
+        throw new Error('Gender name is too long.')
+      }
+    },
+  },
   tokens: [{
     token: {
       type: String,

@@ -1,5 +1,15 @@
 @import './Nav.css';
+@import './forms.css';
+@import './buttons.css';
 
 #app {
   text-align: center;
+}
+
+.error-message {
+  font-size: 14px;
+}
+
+.trait {
+  padding-right: 10px;
 }

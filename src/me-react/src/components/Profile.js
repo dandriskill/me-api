@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 const Profile = ({
-  user: { firstName, age },
+  user: { firstName, age, gender },
 }) => (
   <div>
     {firstName && age ?
@@ -10,10 +10,12 @@ const Profile = ({
           <h1>{firstName}</h1>
           <div className="profile-item">
             <p>
-              <strong>Age</strong>
+              <strong className="trait">Age</strong> {age}
             </p>
+          </div>
+          <div className="profile-item">
             <p>
-              {age}
+              <strong className="trait">Gender</strong> {gender}
             </p>
           </div>
         </Fragment>

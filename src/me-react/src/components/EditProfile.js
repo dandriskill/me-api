@@ -5,13 +5,14 @@ import * as Yup from 'yup';
 
 const EditProfile = ({
   history,
-  user: { firstName, age, email },
+  user: { firstName, age, email, gender },
   handleEditProfile,
   handleDeleteProfile,
 }) => {
   const initialValues = {
     firstName,
     age,
+    gender,
     email,
     password: '',
   };
@@ -25,6 +26,10 @@ const EditProfile = ({
       .number()
       .positive()
       .integer()
+      .typeError('Only normal characters allowed')
+      .required('Required'),
+    gender: Yup
+      .string()
       .typeError('Only normal characters allowed')
       .required('Required'),
     email: Yup
@@ -80,6 +85,16 @@ const EditProfile = ({
               </div>
               <div className="field">
                 <Field
+                  type="gender"
+                  name="gender"
+                  component="input"
+                  className="form-input"
+                  placeholder="Gender"
+                />
+                <ErrorMessage name="gender" component="div" className="error-message" />
+              </div>
+              <div className="field">
+                <Field
                   type="email"
                   name="email"
                   component="input"
@@ -105,7 +120,10 @@ const EditProfile = ({
           </Form>
         )}
       </Formik>
-      <button onClick={() => handleDeleteProfile()}>
+      <button
+        className="ghost"
+        onClick={() => handleDeleteProfile()}
+      >
         Delete Profile
       </button>
     </div>
