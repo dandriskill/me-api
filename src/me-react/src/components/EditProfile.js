@@ -52,7 +52,7 @@ const EditProfile = ({
           let updates = {};
           const valKeys = Object.keys(values);
           valKeys.forEach(v => {
-            if (values[v] !== '') updates[v] = values[v];
+            if (values[v] !== '' || v === 'gender') updates[v] = values[v];
           });
           handleEditProfile(updates)
             .then(r => history.push('/profile'));

@@ -13,11 +13,13 @@ const Profile = ({
               <strong className="trait">Age</strong> {age}
             </p>
           </div>
-          <div className="profile-item">
-            <p>
-              <strong className="trait">Gender</strong> {gender}
-            </p>
-          </div>
+          {gender && (
+            <div className="profile-item">
+              <p>
+                <strong className="trait">Gender</strong> {gender}
+              </p>
+            </div>
+          )}
         </Fragment>
       ) : (
         <h2>Loading...</h2>
