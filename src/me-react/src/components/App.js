@@ -36,7 +36,7 @@ class App extends Component {
       if (user && token) this.populateUser(user, token);
     }
     catch (err) {
-      console.log(err);
+      alert('Invalid login.');
     }
   };
 
@@ -56,7 +56,7 @@ class App extends Component {
       if (user && token) this.populateUser(user, token);
     }
     catch (err) {
-      console.log(err);
+      alert('Invalid input.');
     }
   };
 

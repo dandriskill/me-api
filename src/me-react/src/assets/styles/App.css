@@ -6,6 +6,14 @@
   text-align: center;
 }
 
+h1 {
+  font-size: 36px;
+}
+
+p {
+  font-size: 18px;
+}
+
 .error-message {
   font-size: 14px;
 }
