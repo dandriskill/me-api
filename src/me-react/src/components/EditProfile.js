@@ -30,8 +30,7 @@ const EditProfile = ({
       .required('Required'),
     gender: Yup
       .string()
-      .typeError('Only normal characters allowed')
-      .required('Required'),
+      .typeError('Only normal characters allowed'),
     email: Yup
       .string()
       .email()

@@ -40,13 +40,8 @@ class App extends Component {
     }
   };
 
-  handleSignup = async ({
-    firstName,
-    email,
-    password,
-    age,
-    gender,
-  }) => {
+  handleSignup = async data => {
+    console.log(data);
     try {
       const {
         data: {
@@ -56,13 +51,7 @@ class App extends Component {
       } = await axios({
         method: 'post',
         url: 'http://localhost:3001/signup',
-        data: {
-          firstName,
-          email,
-          password,
-          age,
-          gender,
-        },
+        data,
       });
       if (user && token) this.populateUser(user, token);
     }

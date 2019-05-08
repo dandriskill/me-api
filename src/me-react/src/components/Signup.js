@@ -27,8 +27,7 @@ const signUpSchema = Yup.object().shape({
     .required('Required'),
   gender: Yup
     .string()
-    .typeError('Only normal characters allowed')
-    .required('Required'),
+    .typeError('Only normal characters allowed'),
   password: Yup
     .string()
     .min(2, 'Too short!')
@@ -50,10 +49,23 @@ const Signup = ({ handleSignup, history }) => (
     <Formik
       initialValues={initialValues}
       validationSchema={signUpSchema}
-      onSubmit={({ email, age, gender: g, password, name }, { resetForm, setSubmitting }) => {
-        const firstName = formatInput(name);
-        const gender = formatInput(g);
-        handleSignup({ email, age, gender, password, firstName });
+      onSubmit={(values, { resetForm, setSubmitting }) => {
+        // const firstName = formatInput(name);
+        // const gender = formatInput(g);
+        let data = {};
+        const valKeys = Object.keys(values);
+        valKeys.forEach(v => {
+          if (v !== 'passwordConfirmation') {
+            if (v === 'name') {
+              data['firstName'] = formatInput(values[v]);
+            } else if (v === 'gender') {
+              data[v] = formatInput(values[v]);
+            } else {
+              data[v] = values[v];
+            }
+          }
+        });
+        handleSignup(data);
         setSubmitting(false);
       }}
     >
